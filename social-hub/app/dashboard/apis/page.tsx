@@ -53,8 +53,8 @@ const PLATFORMS = [
 ];
 
 export default async function ApisPage() {
-  let credentials = [];
-  let tokens = [];
+  let credentials: any[] = [];
+  let tokens: any[] = [];
   try {
     credentials = await prisma.platformCredential.findMany();
     tokens = await prisma.platformToken.findMany();

@@ -3,7 +3,7 @@ import { PlannerCalendar } from './PlannerCalendar';
 import { CalendarDays } from 'lucide-react';
 
 export default async function PlannerPage() {
-  let posts = [];
+  let posts: any[] = [];
   try {
     posts = await prisma.contentQueue.findMany({
       where: {

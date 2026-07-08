@@ -2,7 +2,7 @@ import prisma from '@/lib/db';
 import { QueueTable } from './QueueTable';
 
 export default async function QueuePage() {
-  let posts = [];
+  let posts: any[] = [];
   try {
     posts = await prisma.contentQueue.findMany({
       orderBy: { scheduledTime: 'asc' },

@@ -5,7 +5,7 @@ export default async function AnalyticsPage() {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  let snapshots = [];
+  let snapshots: any[] = [];
   try {
     snapshots = await prisma.analyticsSnapshot.findMany({
       where: {
