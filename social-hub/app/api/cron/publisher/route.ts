@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 import prisma from '@/lib/db/index';
 import { updatePostStatus } from '@/lib/db/dal';
 import { PinterestClient } from '@/lib/platforms/pinterest';
@@ -6,10 +8,7 @@ import { MetaClient } from '@/lib/platforms/meta';
 import { TikTokClient } from '@/lib/platforms/tiktok';
 import { YouTubeClient } from '@/lib/platforms/youtube';
 
-// Netlify Scheduled API Route Config
-export const config = {
-  schedule: '*/5 * * * *',
-};
+
 
 export async function GET(request: Request) {
   try {

@@ -59,8 +59,9 @@ export class PinterestClient {
 
     // Read image from Netlify Blobs
     const store = getStore({ name: 'media', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_API_TOKEN });
-    const imageBuffer = await store.get(imageKey, { type: 'buffer' });
-    if (!imageBuffer) throw new Error(`Blob not found: ${imageKey}`);
+    const arrayBuffer = await store.get(imageKey, { type: 'arrayBuffer' });
+    if (!arrayBuffer) throw new Error(`Blob not found: ${imageKey}`);
+    const imageBuffer = Buffer.from(arrayBuffer);
 
     const base64Image = imageBuffer.toString('base64');
     

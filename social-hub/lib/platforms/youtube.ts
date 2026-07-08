@@ -66,8 +66,9 @@ export class YouTubeClient {
     const token = await this.getValidToken();
 
     const store = getStore({ name: 'media', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_API_TOKEN });
-    const videoBuffer = await store.get(videoKey, { type: 'buffer' });
-    if (!videoBuffer) throw new Error(`Blob not found: ${videoKey}`);
+    const arrayBuffer = await store.get(videoKey, { type: 'arrayBuffer' });
+    if (!arrayBuffer) throw new Error(`Blob not found: ${videoKey}`);
+    const videoBuffer = Buffer.from(arrayBuffer);
     
     const videoSize = videoBuffer.length;
 

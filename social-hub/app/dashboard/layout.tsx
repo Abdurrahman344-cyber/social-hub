@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
 export default function DashboardLayout({
   children,
 }: {
@@ -12,8 +13,10 @@ export default function DashboardLayout({
         <nav className="flex flex-col gap-2">
           <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-md font-medium">Dashboard</Link>
           <Link href="/dashboard/queue" className="p-2 hover:bg-gray-100 rounded-md font-medium">Queue</Link>
+          <Link href="/dashboard/planner" className="p-2 hover:bg-gray-100 rounded-md font-medium">Planner</Link>
           <Link href="/dashboard/compose" className="p-2 hover:bg-gray-100 rounded-md font-medium">Compose</Link>
           <Link href="/dashboard/analytics" className="p-2 hover:bg-gray-100 rounded-md font-medium">Analytics</Link>
+          <Link href="/dashboard/apis" className="p-2 hover:bg-gray-100 rounded-md font-medium">APIs</Link>
           <Link href="/dashboard/settings" className="p-2 hover:bg-gray-100 rounded-md font-medium">Settings</Link>
         </nav>
       </aside>

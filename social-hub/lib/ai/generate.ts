@@ -66,7 +66,7 @@ Include relevant hashtags at the end. Do not wrap the response in quotes.`;
   // but usually it's fine to keep them together for the DB.
   // We'll just extract words starting with #
   const words = text.split(/\s+/);
-  const hashtags = words.filter(w => w.startsWith('#')).join(' ');
+  const hashtags = words.filter((w: string) => w.startsWith('#')).join(' ');
   const caption = text.replace(hashtags, '').trim();
 
   return { caption, hashtags };
@@ -118,7 +118,7 @@ export async function generateImage(prompt: string, platform: string, siteContex
   // Save to Netlify Blobs
   const fileName = `${platform}/${Date.now()}.jpg`;
   const store = getStore({ name: 'media', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_API_TOKEN });
-  await store.set(fileName, imageBuffer);
+  await store.set(fileName, imageBuffer.buffer.slice(imageBuffer.byteOffset, imageBuffer.byteOffset + imageBuffer.byteLength) as ArrayBuffer);
   
   return fileName; // Now just a key, not a path
 }

@@ -3,13 +3,15 @@ import { getStore } from '@netlify/blobs';
 
 export async function GET(
   request: Request,
-  { params }: { params: { key: string[] } }
+  { params }: { params: Promise<{ key: string[] }> }
 ) {
-  const key = params.key.join('/');
+  const resolvedParams = await params;
+  const key = resolvedParams.key.join('/');
   
   try {
     const store = getStore({ name: 'media', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_API_TOKEN });
-    const buffer = await store.get(key, { type: 'buffer' });
+    const arrayBuffer = await store.get(key, { type: 'arrayBuffer' });
+    const buffer = arrayBuffer ? Buffer.from(arrayBuffer) : null;
     
     if (!buffer) {
       return new NextResponse('Blob not found', { status: 404 });

@@ -70,8 +70,9 @@ export class MetaClient {
       response = await fetch(url, { method: 'POST', body: payload });
     } else {
       const store = getStore({ name: 'media', siteID: process.env.NETLIFY_SITE_ID, token: process.env.NETLIFY_API_TOKEN });
-      const imageBuffer = await store.get(imageKeyOrUrl, { type: 'buffer' });
-      if (!imageBuffer) throw new Error(`Blob not found: ${imageKeyOrUrl}`);
+      const arrayBuffer = await store.get(imageKeyOrUrl, { type: 'arrayBuffer' });
+      if (!arrayBuffer) throw new Error(`Blob not found: ${imageKeyOrUrl}`);
+      const imageBuffer = Buffer.from(arrayBuffer);
       
       const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
       

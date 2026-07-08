@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 import { getPlatformCredential, insertOrUpdateToken } from '@/lib/db/dal';
 
 export async function GET(
   request: Request,
-  { params }: { params: { platform: string; action: string } }
+  { params }: { params: Promise<{ platform: string; action: string }> }
 ) {
-  const { platform, action } = params;
+  const { platform, action } = await params;
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
   const error = searchParams.get('error');

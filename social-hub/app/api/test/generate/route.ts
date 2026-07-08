@@ -21,7 +21,7 @@ export async function GET(request: Request) {
       preview: {
         caption: draftPost.caption,
         hashtags: draftPost.hashtags,
-        mediaUrl: `/${draftPost.mediaPath.replace('public/', '')}`, // Format for Next.js static serving
+        mediaUrl: draftPost.mediaPath ? `/api/media/${draftPost.mediaPath}` : null,
       }
     });
   } catch (error: any) {

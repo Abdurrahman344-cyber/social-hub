@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 import prisma from '@/lib/db/index';
 import { saveAnalyticsSnapshot } from '@/lib/db/dal';
 
-// Netlify Scheduled API Route Config (runs daily at midnight)
-export const config = {
-  schedule: '0 0 * * *',
-};
+
 
 export async function GET(request: Request) {
   try {
@@ -41,7 +40,6 @@ export async function GET(request: Request) {
         await saveAnalyticsSnapshot({
           platform: post.platform,
           postId: post.id,
-          date: new Date(),
           views: stats.views || 0,
           impressions: stats.impressions || 0,
           likes: stats.likes || 0,

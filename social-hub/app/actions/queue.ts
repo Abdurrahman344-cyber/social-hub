@@ -39,3 +39,25 @@ export async function triggerAIGeneration(topic: string, platform: string, siteC
     return { success: false, error: error.message };
   }
 }
+
+export async function reschedulePost(id: string, newDateIso: string) {
+  const existing = await prisma.contentQueue.findUnique({ where: { id } });
+  if (!existing || !existing.scheduledTime) return { success: false, error: 'Post not found or not scheduled' };
+  
+  // Keep the original time, just change the date
+  const originalTime = new Date(existing.scheduledTime);
+  const newDate = new Date(newDateIso);
+  
+  newDate.setHours(originalTime.getHours());
+  newDate.setMinutes(originalTime.getMinutes());
+  newDate.setSeconds(originalTime.getSeconds());
+  
+  await prisma.contentQueue.update({
+    where: { id },
+    data: { scheduledTime: newDate },
+  });
+  
+  revalidatePath('/dashboard/planner');
+  revalidatePath('/dashboard/queue');
+  return { success: true };
+}
