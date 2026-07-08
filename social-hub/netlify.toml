@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = ".next"
 
-[env]
+[build.environment]
+  DATABASE_URL = "file:./dev.db"
   NEXT_PRIVATE_TARGET = "server"
