@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PlatformToken {
+  id            String    @id @default(cuid())
+  platform      String    // pinterest, instagram, facebook, tiktok, youtube
+  accessToken   String
+  refreshToken  String?
+  expiresAt     DateTime?
+  accountName   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("platform_tokens")
+}
+
+model ContentQueue {
+  id            String    @id @default(cuid())
+  platform      String
+  title         String?
+  caption       String?
+  hashtags      String?
+  mediaPath     String?
+  mediaType     String?   // image, video
+  scheduledTime DateTime?
+  status        String    @default("draft") // draft, queued, posted, failed
+  errorMessage  String?
+  postedAt      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  analytics     AnalyticsSnapshot[]
+
+  @@map("content_queue")
+}
+
+model AnalyticsSnapshot {
+  id            String       @id @default(cuid())
+  platform      String
+  postId        String
+  post          ContentQueue @relation(fields: [postId], references: [id], onDelete: Cascade)
+  date          DateTime     @default(now()) // The date the stats apply to
+  views         Int          @default(0)
+  likes         Int          @default(0)
+  comments      Int          @default(0)
+  shares        Int          @default(0)
+  saves         Int          @default(0)
+  impressions   Int          @default(0)
+  collectedAt   DateTime     @default(now())
+
+  @@map("analytics_snapshots")
+}
+
+model PromptTemplate {
+  id               String    @id @default(cuid())
+  siteName         String    // iqcognify, apartmenthomesteader, crispyairfryer
+  platform         String
+  promptText       String
+  imageStyleNotes  String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@map("prompt_templates")
+}
+
+model PlatformCredential {
+  id           String   @id @default(cuid())
+  platform     String   @unique // pinterest, meta, tiktok, youtube, gemini
+  clientId     String
+  clientSecret String
+  redirectUri  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@map("platform_credentials")
+}
