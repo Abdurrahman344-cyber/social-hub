@@ -2,21 +2,25 @@ import prisma from '@/lib/db';
 import { AnalyticsCharts } from './AnalyticsCharts';
 
 export default async function AnalyticsPage() {
-  // Fetch snapshots from the last 30 days
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const snapshots = await prisma.analyticsSnapshot.findMany({
-    where: {
-      date: { gte: thirtyDaysAgo }
-    },
-    include: {
-      post: {
-        select: { title: true, caption: true, platform: true }
-      }
-    },
-    orderBy: { date: 'asc' }
-  });
+  let snapshots = [];
+  try {
+    snapshots = await prisma.analyticsSnapshot.findMany({
+      where: {
+        date: { gte: thirtyDaysAgo }
+      },
+      include: {
+        post: {
+          select: { title: true, caption: true, platform: true }
+        }
+      },
+      orderBy: { date: 'asc' }
+    });
+  } catch (error) {
+    console.error("Prisma error:", error);
+  }
 
   return (
     <div className="p-8">

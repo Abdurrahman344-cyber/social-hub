@@ -2,9 +2,14 @@ import prisma from '@/lib/db';
 import { QueueTable } from './QueueTable';
 
 export default async function QueuePage() {
-  const posts = await prisma.contentQueue.findMany({
-    orderBy: { scheduledTime: 'asc' },
-  });
+  let posts = [];
+  try {
+    posts = await prisma.contentQueue.findMany({
+      orderBy: { scheduledTime: 'asc' },
+    });
+  } catch (error) {
+    console.error("Prisma error:", error);
+  }
 
   return (
     <div className="p-8">

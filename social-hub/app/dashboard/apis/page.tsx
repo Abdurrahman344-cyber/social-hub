@@ -53,8 +53,14 @@ const PLATFORMS = [
 ];
 
 export default async function ApisPage() {
-  const credentials = await prisma.platformCredential.findMany();
-  const tokens = await prisma.platformToken.findMany();
+  let credentials = [];
+  let tokens = [];
+  try {
+    credentials = await prisma.platformCredential.findMany();
+    tokens = await prisma.platformToken.findMany();
+  } catch (error) {
+    console.error("Prisma error:", error);
+  }
 
   return (
     <div className="p-8 max-w-7xl mx-auto">

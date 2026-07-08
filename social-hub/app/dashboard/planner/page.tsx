@@ -3,16 +3,21 @@ import { PlannerCalendar } from './PlannerCalendar';
 import { CalendarDays } from 'lucide-react';
 
 export default async function PlannerPage() {
-  const posts = await prisma.contentQueue.findMany({
-    where: {
-      scheduledTime: {
-        not: null
+  let posts = [];
+  try {
+    posts = await prisma.contentQueue.findMany({
+      where: {
+        scheduledTime: {
+          not: null
+        }
+      },
+      orderBy: {
+        scheduledTime: 'asc'
       }
-    },
-    orderBy: {
-      scheduledTime: 'asc'
-    }
-  });
+    });
+  } catch (error) {
+    console.error("Prisma error:", error);
+  }
 
   return (
     <div className="p-8 max-w-[1600px] mx-auto">
